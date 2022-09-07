@@ -1,0 +1,65 @@
+Sep  4 22:33:40 pi-hole sshd[20764]: Accepted password for admin from 192.168.1.192 port 51178 ssh2
+Sep  4 22:33:40 pi-hole sshd[20764]: pam_unix(sshd:session): session opened for user admin(uid=1000) by (uid=0)
+Sep  4 22:33:40 pi-hole systemd-logind[709]: New session 5062 of user admin.
+Sep  4 22:33:40 pi-hole systemd: pam_unix(systemd-user:session): session opened for user admin(uid=1000) by (uid=0)
+Sep  4 22:35:55 pi-hole sudo:    admin : TTY=pts/0 ; PWD=/var/log ; USER=root ; COMMAND=/usr/sbin/adduser
+Sep  4 22:35:55 pi-hole sudo: pam_unix(sudo:session): session opened for user root(uid=0) by admin(uid=1000)
+Sep  4 22:35:55 pi-hole sudo: pam_unix(sudo:session): session closed for user root
+Sep  4 22:36:38 pi-hole sudo:    admin : TTY=pts/0 ; PWD=/var/log ; USER=root ; COMMAND=/usr/sbin/adduser testuser1
+Sep  4 22:36:38 pi-hole sudo: pam_unix(sudo:session): session opened for user root(uid=0) by admin(uid=1000)
+Sep  4 22:36:38 pi-hole groupadd[20941]: group added to /etc/group: name=testuser1, GID=1001
+Sep  4 22:36:38 pi-hole groupadd[20941]: group added to /etc/gshadow: name=testuser1
+Sep  4 22:36:38 pi-hole groupadd[20941]: new group: name=testuser1, GID=1001
+Sep  4 22:36:39 pi-hole useradd[20947]: new user: name=testuser1, UID=1001, GID=1001, home=/home/testuser1, shell=/bin/bash, from=/dev/pts/1
+Sep  4 22:36:48 pi-hole passwd[20958]: pam_unix(passwd:chauthtok): password changed for testuser1
+Sep  4 22:37:06 pi-hole chfn[20959]: changed user 'testuser1' information
+Sep  4 22:37:08 pi-hole sudo: pam_unix(sudo:session): session closed for user root
+Sep  4 22:37:22 pi-hole su: pam_unix(su:auth): authentication failure; logname=admin uid=1000 euid=0 tty=/dev/pts/0 ruser=admin rhost=  user=testuser1
+Sep  4 22:37:24 pi-hole su: FAILED SU (to testuser1) admin on pts/0
+Sep  4 22:37:31 pi-hole su: pam_unix(su:auth): authentication failure; logname=admin uid=1000 euid=0 tty=/dev/pts/0 ruser=admin rhost=  user=testuser1
+Sep  4 22:37:32 pi-hole su: FAILED SU (to testuser1) admin on pts/0
+Sep  4 22:38:59 pi-hole sshd[20851]: Received disconnect from 192.168.1.192 port 51178:11: disconnected by user
+Sep  4 22:38:59 pi-hole sshd[20851]: Disconnected from user admin 192.168.1.192 port 51178
+Sep  4 22:38:59 pi-hole sshd[20764]: pam_unix(sshd:session): session closed for user admin
+Sep  4 22:38:59 pi-hole systemd-logind[709]: Session 5062 logged out. Waiting for processes to exit.
+Sep  4 22:38:59 pi-hole systemd-logind[709]: Removed session 5062.
+Sep  4 22:39:01 pi-hole CRON[20993]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Sep  4 22:39:01 pi-hole CRON[20993]: pam_unix(cron:session): session closed for user root
+Sep  4 22:39:08 pi-hole sshd[21038]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=192.168.1.192  user=admin
+Sep  4 22:39:10 pi-hole sshd[21038]: Failed password for admin from 192.168.1.192 port 35548 ssh2
+Sep  4 22:39:17 pi-hole sshd[21038]: Accepted password for admin from 192.168.1.192 port 35548 ssh2
+Sep  4 22:39:17 pi-hole sshd[21038]: pam_unix(sshd:session): session opened for user admin(uid=1000) by (uid=0)
+Sep  4 22:39:18 pi-hole systemd-logind[709]: New session 5065 of user admin.
+Sep  4 22:39:18 pi-hole systemd: pam_unix(systemd-user:session): session opened for user admin(uid=1000) by (uid=0)
+Sep  4 22:40:01 pi-hole CRON[21122]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Sep  4 22:40:01 pi-hole CRON[21122]: pam_unix(cron:session): session closed for user root
+Sep  4 22:40:10 pi-hole sshd[21106]: Received disconnect from 192.168.1.192 port 35548:11: disconnected by user
+Sep  4 22:40:10 pi-hole sshd[21106]: Disconnected from user admin 192.168.1.192 port 35548
+Sep  4 22:40:10 pi-hole sshd[21038]: pam_unix(sshd:session): session closed for user admin
+Sep  4 22:40:10 pi-hole systemd-logind[709]: Session 5065 logged out. Waiting for processes to exit.
+Sep  4 22:40:10 pi-hole systemd-logind[709]: Removed session 5065.
+Sep  4 22:40:16 pi-hole sshd[21141]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=192.168.1.192  user=admin
+Sep  4 22:40:18 pi-hole sshd[21141]: Failed password for admin from 192.168.1.192 port 39558 ssh2
+Sep  4 22:40:22 pi-hole sshd[21141]: Failed password for admin from 192.168.1.192 port 39558 ssh2
+Sep  4 22:40:23 pi-hole sshd[21141]: Connection closed by authenticating user admin 192.168.1.192 port 39558 [preauth]
+Sep  4 22:40:23 pi-hole sshd[21141]: PAM 1 more authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=192.168.1.192  user=admin
+Sep  4 22:40:31 pi-hole sshd[21144]: Accepted password for admin from 192.168.1.192 port 42916 ssh2
+Sep  4 22:40:31 pi-hole sshd[21144]: pam_unix(sshd:session): session opened for user admin(uid=1000) by (uid=0)
+Sep  4 22:40:31 pi-hole systemd-logind[709]: New session 5068 of user admin.
+Sep  4 22:40:32 pi-hole systemd: pam_unix(systemd-user:session): session opened for user admin(uid=1000) by (uid=0)
+Sep  4 22:50:01 pi-hole CRON[21280]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Sep  4 22:50:01 pi-hole CRON[21280]: pam_unix(cron:session): session closed for user root
+Sep  4 23:00:01 pi-hole CRON[21350]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Sep  4 23:00:01 pi-hole CRON[21350]: pam_unix(cron:session): session closed for user root
+Sep  4 22:40:18 pi-hole sshd[21141]: Failed password for bob from 192.168.1.195 port 39558 ssh2
+Sep  4 22:40:22 pi-hole sshd[21141]: Failed password for bob from 192.168.1.192 port 39558 ssh2
+Sep  4 22:40:18 pi-hole sshd[21141]: Failed password for bob from 192.168.1.192 port 39558 ssh2
+Sep  4 22:40:22 pi-hole sshd[21141]: Failed password for jim from 192.168.156.192 port 39558 ssh2
+Sep  4 22:40:18 pi-hole sshd[21141]: Failed password for jim from 192.168.1.192 port 39558 ssh2
+Sep  4 22:40:22 pi-hole sshd[21141]: Failed password for dingdong from 192.168.18.192 port 39558 ssh2
+Sep  4 22:40:18 pi-hole sshd[21141]: Failed password for dingdong from 192.169.1.192 port 39558 ssh2
+Sep  4 22:40:22 pi-hole sshd[21141]: Failed password for dingdong from 19.168.1.192 port 39558 ssh2
+Sep  4 22:40:18 pi-hole sshd[21141]: Failed password for dingdong1 from 192.168.1.192 port 39558 ssh2
+Sep  4 22:40:22 pi-hole sshd[21141]: Failed password for admin from 192.168.1.192 port 39558 ssh2
+Sep  4 22:40:18 pi-hole sshd[21141]: Failed password for admin from 2.168.1.192 port 39558 ssh2
+Sep  4 22:40:22 pi-hole sshd[21141]: Failed password for admin from 192.168.1.192 port 39558 ssh2

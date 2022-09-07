@@ -1,0 +1,7 @@
+Total hours worked on Monday: 24.4
+Total hours worked on Tuesday: 24.1
+Total hours worked on Wednesday: 26.6
+Total hours worked on Thursday: 22.4
+Total hours worked on Friday: 23.9
+Total hours worked on Saturday: 24.8
+Total hours worked on Sunday: 26.6
