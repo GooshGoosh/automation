@@ -1,3 +1,0 @@
-Date/Time: Aug 29 20:55:13; User: alexg; Command: /usr/bin/apt update
-Date/Time: Aug 29 21:24:14; User: alexg; Command: /usr/bin/apt update
-Date/Time: Aug 29 22:17:32; User: alexg; Command: /usr/bin/apt upgrade -y
