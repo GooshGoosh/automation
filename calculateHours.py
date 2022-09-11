@@ -32,10 +32,10 @@ def write_report(hoursDict, reportFile):
             file.write('Total hours worked on {}: {:.1f}\n'.format(i, hoursDict[i]))
     file.close()
 
-hoursList = read_file('/home/alexg/scripts/automate_python/hours-worked.csv')
+hoursList = read_file('/path/to/hours-worked.csv')
 hoursDict = process_data(hoursList)
 print(hoursList)
 print()
 print(hoursDict)
 print()
-write_report(hoursDict, '/home/alexg/scripts/automate_python/hours-report.txt')
+write_report(hoursDict, '/path/to/hours-report.txt')
