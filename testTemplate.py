@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+# testTemplate.py - A template for creating TestCase files to test functions.
+
 from 'test_file' import 'test_function'
 import unittest
 

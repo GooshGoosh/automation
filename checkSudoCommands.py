@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 
+# checkSudoCommands.py - Takes the path to the auth.log file and parses it for the date/time, user, and command that was run
+# with sudo privileges. The data is written to a file and the path to the output file can be specified; 
+# defaults to the same directory that the script was run in.
+
 import os
 import sys
 import re

@@ -43,14 +43,14 @@ def check_memory_usage():
 
 
 def check_localhost():
-    localhost = socket.gethostbyname('localhost')
+    localhost = socket.gethostbyname('localhost')       # Check if the network interface is up and working for the system.
     if localhost == "127.0.0.1":
         print('localhost: 127.0.0.1')
     else:
         print('localhost: Failed')
         
         
-def check_internet(host='8.8.8.8', port=53, timeout=3):
+def check_internet(host='8.8.8.8', port=53, timeout=3):     # Check if the system can reach the internet. Use an IPv4 address to prevent DNS errors.
     """
     Host: 8.8.8.8 (google-public-dns-a.google.com)
     OpenPort: 53/tcp
@@ -58,15 +58,14 @@ def check_internet(host='8.8.8.8', port=53, timeout=3):
     """
     try:
         socket.setdefaulttimeout(timeout)
-        socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect((host, port))
-        print('Internet Check: OK')
+        socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect((host, port))     # Test for a connection to 8.8.8.8 on port 53 (DNS)
+        print('Internet Check: OK')                                                 # Uses one of Google's public DNS servers.
     except socket.error as ex:
-        #print(ex)
         print('Internet Check: Failed')
 
 
-def check_DNS(host='google-public-dns-a.google.com', timeout=3):
-    socket.setdefaulttimeout(timeout)
+def check_DNS(host='google-public-dns-a.google.com', timeout=3):        # Check if DNS is working properly and the system is correctly resolving host names.
+    socket.setdefaulttimeout(timeout)                                   # Uses one of Google's public DNS servers.
     googleDNS = socket.gethostbyname(host)
     if googleDNS == '8.8.8.8':
         print('DNS Check: OK')

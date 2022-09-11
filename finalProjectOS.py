@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 
+# finalProjectOS.py - Parses the final-project-logs.txt file for error and info logs pertaining to a specific process.
+# Records the type of log message and the user who generated the log message. Tracks the number of times each error occurs as
+# well as the number of log message (error or info) that each user generates.
+
 import csv
 import re
 import operator
@@ -66,6 +70,11 @@ def create_user_stats_file(outputFile, dataList):
             else:
                 writer.writerow([item[0], item[1].get('INFO', 0), item[1].get('ERROR', 0)])
         file.close()
+
+
+##############
+# MAIN BLOCK #
+##############
 
 with open(logFile, 'r') as file:
     fileLines = file.readlines()

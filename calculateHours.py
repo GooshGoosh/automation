@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# calculateHours.py - Reads a csv file that contains the days of the week and the hours worked on each day over the last 4 weeks.
+# calculateHours.py - Reads a csv file that contains the days of the week and the hours worked on each day.
 
 
 import csv
