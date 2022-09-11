@@ -129,8 +129,8 @@ def generate_report(csvFile):
         file.close()
         
 
-textFile = '/home/alexg/scripts/automate_python/moby-dick.txt'
-outputFile = '/home/alexg/scripts/automate_python/moby-dick-words.csv'
+textFile = '/path/to/moby-dick.txt'
+outputFile = '/path/to/moby-dick-words.csv'
 
 try:
     textFileLines = read_text_file(textFile)
