@@ -11,8 +11,9 @@ with open(sys.argv[1], 'r') as file:
     for line in fileLines:
         oldName.append(line.strip())
     for line in oldName:
-        newName.append(line.replace("jane", "jdoe"))
+        newName.append(line.replace(sys.argv[2], sys.argv[3]))
     for line in range(len(newName)):
-        subprocess.run(['mv', oldName[line], newName[line]])
+        if sys.argv[2] in oldName[line]:
+            subprocess.run(['mv', oldName[line], newName[line]])
     file.close()
 
