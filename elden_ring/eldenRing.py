@@ -152,9 +152,9 @@ playerShield = False        # Store the status of a shield in the player's left 
 # Get the name of the currently logged in user and create a path to the directory
 # that stores the Elden Ring class .csv files.
 user = os.getlogin()
-bossesPath = os.path.abspath(f'./elden_ring/bosses/')
-classesPath = os.path.abspath(f'./elden_ring/classes/')
-starterWeaponsPath = os.path.abspath(f'./elden_ring/weapons/starter-weapons.csv')
+bossesPath = os.path.abspath(f'./bosses/')
+classesPath = os.path.abspath(f'./classes/')
+starterWeaponsPath = os.path.abspath(f'./weapons/starter-weapons.csv')
 
 stats = {
     'Class:': "",
