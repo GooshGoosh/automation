@@ -76,7 +76,12 @@ def sandwich_maker():
         answer = pyip.inputYesNo(prompt='\nWould you like to make another sandwich?\n')
         
 
-sandwich_maker()
+def main():
+    sandwich_maker()
 
-# Total the amount and number of sandwiches
-print(f'\nThe total cost of {numOfSandwiches} sandwiches: ${total:.2f}\n')
+    # Total the amount and number of sandwiches
+    print(f'\nThe total cost of {numOfSandwiches} sandwiches: ${total:.2f}\n')
+
+
+if __name__ == "__main__":
+    main()

@@ -23,10 +23,16 @@ def comma_join(itemList):
         print(''.join(newList))
 
 
-print()
-comma_join(spam)
-print()
-comma_join(emptyList)
-print()
-comma_join(longList)
-print()
+
+def main():
+    print()
+    comma_join(spam)
+    print()
+    comma_join(emptyList)
+    print()
+    comma_join(longList)
+    print()
+
+
+if __name__ == "__main__":
+    main()

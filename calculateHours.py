@@ -32,10 +32,16 @@ def write_report(hoursDict, reportFile):
             file.write('Total hours worked on {}: {:.1f}\n'.format(i, hoursDict[i]))
     file.close()
 
-hoursList = read_file('/path/to/hours-worked.csv')
-hoursDict = process_data(hoursList)
-print(hoursList)
-print()
-print(hoursDict)
-print()
-write_report(hoursDict, '/path/to/hours-report.txt')
+
+def main():
+    hoursList = read_file('/path/to/hours-worked.csv')
+    hoursDict = process_data(hoursList)
+    print(hoursList)
+    print()
+    print(hoursDict)
+    print()
+    write_report(hoursDict, '/path/to/hours-report.txt')
+
+
+if __name__ == "__main__":
+    main()

@@ -32,4 +32,9 @@ def print_table(table):
         print()
 
 
-print_table(tableData)
+def main():
+    print_table(tableData)
+
+
+if __name__ == "__main__":
+    main()

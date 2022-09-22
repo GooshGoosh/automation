@@ -5,13 +5,19 @@
 import pyautogui
 import time
 
-time.sleep(3)                       # Give time to switch to the game window.
-while True:
-    pyautogui.press("up")           # Press the 'up' arrow key.
-    time.sleep(0.1)
-    pyautogui.press("right")        # Press the 'right' arrow key.
-    time.sleep(0.1)
-    pyautogui.press("down")         # Press the 'down' arrow key.
-    time.sleep(0.1)
-    pyautogui.press("left")         # PRess the 'left' arrow key.
-    time.sleep(0.1)
+
+def main():
+    time.sleep(3)                       # Give time to switch to the game window.
+    while True:
+        pyautogui.press("up")           # Press the 'up' arrow key.
+        time.sleep(0.1)
+        pyautogui.press("right")        # Press the 'right' arrow key.
+        time.sleep(0.1)
+        pyautogui.press("down")         # Press the 'down' arrow key.
+        time.sleep(0.1)
+        pyautogui.press("left")         # PRess the 'left' arrow key.
+        time.sleep(0.1)
+
+
+if __name__ == "__main__":
+    main()

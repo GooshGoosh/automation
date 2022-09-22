@@ -23,3 +23,12 @@ def binary_search(list, key):
             print("Checking the right side")
             left = middle + 1
     return -1 
+
+
+def main():
+    list = []
+    binary_search(list, "")
+
+
+if __name__ == "__main__":
+    main()

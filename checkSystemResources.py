@@ -80,24 +80,25 @@ def check_reboot_required():
         print('No reboot required')
 
 
-##############
-# MAIN BLOCK #
-##############
+def main():
+    print('\nChecking Disk...\n')
+    check_disk_usage('/')
 
-print('\nChecking Disk...\n')
-check_disk_usage('/')
+    print('\nChecking CPU...\n')
+    check_cpu_usage()
 
-print('\nChecking CPU...\n')
-check_cpu_usage()
+    print('\nChecking Memory...\n')
+    check_memory_usage()
 
-print('\nChecking Memory...\n')
-check_memory_usage()
+    print('\nChecking Internet Connection...\n')
+    check_localhost()   
+    check_internet()
+    check_DNS()
 
-print('\nChecking Internet Connection...\n')
-check_localhost()   
-check_internet()
-check_DNS()
+    print('\nChecking Reboot...\n')
+    check_reboot_required()
+    print('\nChecks finished\nExiting...')
 
-print('\nChecking Reboot...\n')
-check_reboot_required()
-print('\nChecks finished\nExiting...')
+
+if __name__ == "__main__":
+    main()

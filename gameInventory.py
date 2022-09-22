@@ -27,6 +27,11 @@ def add_to_inventory(inventory, itemList):
     return inventory
 
 
-display_inventory(bag)
-bag = add_to_inventory(bag, loot)
-display_inventory(bag)
+def main():
+    display_inventory(bag)
+    bag = add_to_inventory(bag, loot)
+    display_inventory(bag)
+
+
+if __name__ == "__main__":
+    main()

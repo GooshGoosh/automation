@@ -8,7 +8,13 @@
 import csv
 import re
 import os
-from wsgiref import headers
+
+
+textFile = 'moby-dick.txt'
+outputFile = 'moby-dick-words.csv'
+listOfData = []
+headers = ['Word Length', 'Num of Words', 'Num of Lines']
+
 
 def read_text_file(textFile):
     with open(textFile, 'r') as file:
@@ -129,23 +135,22 @@ def generate_report(csvFile):
         file.close()
         
 
-textFile = '/path/to/moby-dick.txt'
-outputFile = '/path/to/moby-dick-words.csv'
+def main():
+    try:
+        textFileLines = read_text_file(textFile)
+        textFileLines = remove_newlines(textFileLines)
+        oneLetterWords = one_letter_words(textFileLines)
+        twoLetterWords = two_letter_words(textFileLines)
+        threeLetterWords = three_letter_words(textFileLines)
+        fourLetterWords = four_letter_words(textFileLines)
+        fiveLetterWords = five_letter_words(textFileLines)
+        sixLetterWords = six_letter_words(textFileLines)
+        sevenLetterWords = seven_letter_words(textFileLines)
+        generate_csv(listOfData, outputFile, headers)
+        generate_report(outputFile)
+    except FileNotFoundError:
+        print("\nFile does not exist\n")
 
-try:
-    textFileLines = read_text_file(textFile)
-    textFileLines = remove_newlines(textFileLines)
-    listOfData = []
-    headers = ['Word Length', 'Num of Words', 'Num of Lines']
 
-    oneLetterWords = one_letter_words(textFileLines)
-    twoLetterWords = two_letter_words(textFileLines)
-    threeLetterWords = three_letter_words(textFileLines)
-    fourLetterWords = four_letter_words(textFileLines)
-    fiveLetterWords = five_letter_words(textFileLines)
-    sixLetterWords = six_letter_words(textFileLines)
-    sevenLetterWords = seven_letter_words(textFileLines)
-    generate_csv(listOfData, outputFile, headers)
-    generate_report(outputFile)
-except FileNotFoundError:
-    print("\nFile does not exist\n")
+if __name__ == "__main__":
+    main()

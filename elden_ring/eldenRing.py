@@ -24,6 +24,43 @@ import pyinputplus as pyip
 import csv
 
 
+# Get the name of the currently logged in user and create a path to the directory
+# that stores the Elden Ring class .csv files.
+user = os.getlogin()
+bossesPath = os.path.abspath(f'./bosses/')
+classesPath = os.path.abspath(f'./classes/')
+starterWeaponsPath = os.path.abspath(f'./weapons/starter-weapons.csv')
+
+##################
+# VARIABLE BLOCK #
+##################
+
+playerMaxHealth = 0         # Store the player's max health.
+playerCurrentHealth = 0     # Store the player's current health.
+playerAttack = 0            # Store the player's attack rating of their weapon(s).
+playerShield = False        # Store the status of a shield in the player's left hand.
+stats = {
+    'Class:': "",
+    'Vig:': 0,
+    'Mnd:': 0,
+    'End:': 0,
+    'Str:': 0,
+    'Dex:': 0,
+    'Int:': 0,
+    'Fth:': 0,
+    'Arc:': 0
+}   # Dictionary to store the player's stats.
+equipment = {
+    'Right Hand:': "",
+    'Left Hand:': "",
+    'Helm:': "",
+    'Torso:': "",
+    'Wrists:': "",
+    'Legs:': ""
+}   # Dictionary to track the player's current equipment.
+inventory = {}   # Dictionary to track the player's inventory.
+
+
 def grace(): 
     global playerCurrentHealth 
                                         
@@ -140,149 +177,112 @@ def main_boss():
         sys.exit(0)
 
 
-##################
-# VARIABLE BLOCK #
-##################
+def main():
+    global playerCurrentHealth
+    # Soldier of Godrick
+    print('\nSoldier of Godrick')                                               # Print the boss name.
+    bossHealth = 300                                                            # Set the boss health.
+    bossAttack = 10                                                             # Set the boss attack rating.
+    while playerCurrentHealth > 0 and bossHealth > 0:
+        bossAction = random.randint(1, 2)                                       # Get boss action.
+        print(f'\nPlayer HP: {playerCurrentHealth}')                            # Print current player and boss health.
+        print(f'Boss HP: {bossHealth}')
+        print('-' * 30)
+        playerAction = pyip.inputInt('\nEnter a 1 or 2: ', min=1, max=2)        # Have the player input a 1 or a 2.
 
-playerMaxHealth = 0         # Store the player's max health.
-playerCurrentHealth = 0     # Store the player's current health.
-playerAttack = 0            # Store the player's attack rating of their weapon(s).
-playerShield = False        # Store the status of a shield in the player's left hand.
+        if int(playerAction) == bossAction:                                     # Check player and boss actions.
+            print (f'\nYou deal {playerAttack} damage!\n')                      # If player won, then player deals damage to boss. 
+            bossHealth -= playerAttack 
+            time.sleep(1.5)       
+        else:                                                                   
+            print (f'\nYou take {bossAttack} damage!\n')                        # If boss won, then boss deals damage to player.
+            playerCurrentHealth -= bossAttack
+            time.sleep(1.5)
+            
+    if playerCurrentHealth <= 0:                                                # Check if the player's health is at or below 0.
+        print('\nYOU DIED\n')                                                   # If so, then exit the program.
+        time.sleep(1)
+        sys.exit(0)
+    else:
+        print('\nENEMY FELLED\n')
+        time.sleep(1)
 
-# Get the name of the currently logged in user and create a path to the directory
-# that stores the Elden Ring class .csv files.
-user = os.getlogin()
-bossesPath = os.path.abspath(f'./bosses/')
-classesPath = os.path.abspath(f'./classes/')
-starterWeaponsPath = os.path.abspath(f'./weapons/starter-weapons.csv')
+    grace()             # Rest.
 
-stats = {
-    'Class:': "",
-    'Vig:': 0,
-    'Mnd:': 0,
-    'End:': 0,
-    'Str:': 0,
-    'Dex:': 0,
-    'Int:': 0,
-    'Fth:': 0,
-    'Arc:': 0
-}   # Dictionary to store the player's stats.
+    field_boss()        # Field boss.
 
-equipment = {
-    'Right Hand:': "",
-    'Left Hand:': "",
-    'Helm:': "",
-    'Torso:': "",
-    'Wrists:': "",
-    'Legs:': ""
-}   # Dictionary to track the player's current equipment.
+    grace()             # Rest.
 
-inventory = {
+    mini_boss()         # Mini boss.
+
+    grace()             # Rest.
+
+    main_boss()         # Main Boss
     
-}   # Dictionary to track the player's inventory.
 
+if __name__ == "__main__":
 
-#########################
-# CLASS SELECTION BLOCK #
-#########################
+    #########################
+    # CLASS SELECTION BLOCK #
+    #########################
 
+    # Clear the screen.
+    os.system('cls' if os.name == 'nt' else 'clear')                    
 
-# Clear the screen.
-os.system('cls' if os.name == 'nt' else 'clear')                    
+    character = pyip.inputMenu(['Astrologer', 'Bandit', 'Confessor', 'Hero', 'Prisoner',            # Create a menu of the classes for the player to choose from.
+                                'Prophet', 'Samurai', 'Vagabond', 'Warrior', 'Wretch',
+                                'Quit'], numbered=True)
 
-character = pyip.inputMenu(['Astrologer', 'Bandit', 'Confessor', 'Hero', 'Prisoner',            # Create a menu of the classes for the player to choose from.
-                            'Prophet', 'Samurai', 'Vagabond', 'Warrior', 'Wretch',
-                            'Quit'], numbered=True)
-
-if character == 'Quit':
-    sys.exit()                                                                                  # Exit the program if the player chooses the 'Quit' option.
-    
-print('Loading class...')                                                                       # "Load" the class and clear the screen
-time.sleep(0.5)
-os.system('cls' if os.name == 'nt' else 'clear')
-
-
-character = character.lower()                                                                   # Set the character/class choice to all lowercase letters.
-with open(os.path.join(classesPath, character + '.csv')) as csvfile:                            # Join the path to the classes .csv files and the chosen class
-    classReader = csv.reader(csvfile)                                                           # to get the .csv for the chosen class.
-    for row in classReader:
-        if row[0] in stats.keys():                                                              # Store the player's stats
-            if row[0] == "Class:":
-                stats[row[0]] = row[1]
-            else:
-                stats[row[0]] = int(row[1])                                              
-        elif row[0] in equipment.keys():                                                        # Fill the slots for the player's equipment.
-            equipment[row[0]] = row[1]
-csvfile.close()
-
-with open(starterWeaponsPath) as csvfile:                                                       # Search through the starter weapons file to find the weapon
-    weaponReader =csv.reader(csvfile)                                                           # that is in the player's right hand and give the player that
-    for row in weaponReader:                                                                    # weapon's attack rating.
-        if row[0] == equipment['Right Hand:']:                                                  
-            playerAttack = int(row[1])
-        if row[0] == equipment['Left Hand:']:                                                   # If the player is holding another weapon in their left hand,
-            playerAttack += (int(row[1]) / 2)                                                   # Increase the player's attack rating by half of the left-handed weapon.
-csvfile.close()
-
-playerMaxHealth = (stats['Vig:'] * 10)                                                          # Get the player's max health.
-playerCurrentHealth = playerMaxHealth                                                           # Set the player's current health equal to max health.
-if "shield" in equipment['Left Hand:'].lower():                                                 # Determine if the player has a shield in their left hand.
-    playerShield = True
-
-for k, v in stats.items():                                                                      # Print the player's stats.
-    print(k.ljust(7, ' ') + str(v))
-print(f'\nHP: {playerMaxHealth}')
-print(f'Attack: {playerAttack}') 
-print('-' * 30)
-
-for k, v in equipment.items():                                                                  # Print the player's currently equipped items.
-    print(k.ljust(12,' ') + v)
-print('-' * 30)
-
-time.sleep(3)                                                                                   # Let the player read the chosen class' stats.
-input("Press 'ENTER' to continue...")                                                           # Wait for the player to hit 'ENTER' to initiate the first battle.
-
-
-#####################
-# BOSS BATTLE BLOCK #
-#####################
-
-# Soldier of Godrick
-print('\nSoldier of Godrick')                                               # Print the boss name.
-bossHealth = 300                                                            # Set the boss health.
-bossAttack = 10                                                             # Set the boss attack rating.
-while playerCurrentHealth > 0 and bossHealth > 0:
-    bossAction = random.randint(1, 2)                                       # Get boss action.
-    print(f'\nPlayer HP: {playerCurrentHealth}')                            # Print current player and boss health.
-    print(f'Boss HP: {bossHealth}')
-    print('-' * 30)
-    playerAction = pyip.inputInt('\nEnter a 1 or 2: ', min=1, max=2)        # Have the player input a 1 or a 2.
-
-    if int(playerAction) == bossAction:                                     # Check player and boss actions.
-        print (f'\nYou deal {playerAttack} damage!\n')                      # If player won, then player deals damage to boss. 
-        bossHealth -= playerAttack 
-        time.sleep(1.5)       
-    else:                                                                   
-        print (f'\nYou take {bossAttack} damage!\n')                        # If boss won, then boss deals damage to player.
-        playerCurrentHealth -= bossAttack
-        time.sleep(1.5)
+    if character == 'Quit':
+        sys.exit()                                                                                  # Exit the program if the player chooses the 'Quit' option.
         
-if playerCurrentHealth <= 0:                                                # Check if the player's health is at or below 0.
-    print('\nYOU DIED\n')                                                   # If so, then exit the program.
-    time.sleep(1)
-    sys.exit(0)
-else:
-    print('\nENEMY FELLED\n')
-    time.sleep(1)
+    print('Loading class...')                                                                       # "Load" the class and clear the screen
+    time.sleep(0.5)
+    os.system('cls' if os.name == 'nt' else 'clear')
 
-grace()             # Rest.
 
-field_boss()        # Field boss.
+    character = character.lower()                                                                   # Set the character/class choice to all lowercase letters.
+    with open(os.path.join(classesPath, character + '.csv')) as csvfile:                            # Join the path to the classes .csv files and the chosen class
+        classReader = csv.reader(csvfile)                                                           # to get the .csv for the chosen class.
+        for row in classReader:
+            if row[0] in stats.keys():                                                              # Store the player's stats
+                if row[0] == "Class:":
+                    stats[row[0]] = row[1]
+                else:
+                    stats[row[0]] = int(row[1])                                              
+            elif row[0] in equipment.keys():                                                        # Fill the slots for the player's equipment.
+                equipment[row[0]] = row[1]
+    csvfile.close()
 
-grace()             # Rest.
+    with open(starterWeaponsPath) as csvfile:                                                       # Search through the starter weapons file to find the weapon
+        weaponReader =csv.reader(csvfile)                                                           # that is in the player's right hand and give the player that
+        for row in weaponReader:                                                                    # weapon's attack rating.
+            if row[0] == equipment['Right Hand:']:                                                  
+                playerAttack = int(row[1])
+            if row[0] == equipment['Left Hand:']:                                                   # If the player is holding another weapon in their left hand,
+                playerAttack += (int(row[1]) / 2)                                                   # Increase the player's attack rating by half of the left-handed weapon.
+    csvfile.close()
 
-mini_boss()         # Mini boss.
+    playerMaxHealth = (stats['Vig:'] * 10)                                                          # Get the player's max health.
+    playerCurrentHealth = playerMaxHealth                                                           # Set the player's current health equal to max health.
+    if "shield" in equipment['Left Hand:'].lower():                                                 # Determine if the player has a shield in their left hand.
+        playerShield = True
 
-grace()             # Rest.
+    for k, v in stats.items():                                                                      # Print the player's stats.
+        print(k.ljust(7, ' ') + str(v))
+    print(f'\nHP: {playerMaxHealth}')
+    print(f'Attack: {playerAttack}') 
+    print('-' * 30)
 
-main_boss()         # Main Boss
+    for k, v in equipment.items():                                                                  # Print the player's currently equipped items.
+        print(k.ljust(12,' ') + v)
+    print('-' * 30)
+
+    time.sleep(3)                                                                                   # Let the player read the chosen class' stats.
+    input("Press 'ENTER' to continue...")                                                           # Wait for the player to hit 'ENTER' to initiate the first battle.
+
+    #####################
+    # BOSS BATTLE BLOCK #
+    #####################
+    
+    main()

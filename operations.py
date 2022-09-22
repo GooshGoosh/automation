@@ -246,83 +246,88 @@ def triple_div():
         incorrectAnswers += 1
 
 
-# Get the user's desired test mode and the max number of digits for each number.
-print()
-testMode = pyip.inputMenu(['Addition', 'Subtraction', 'Multiplication', 'Division', 'All'], numbered=True)
-numOfDigits = pyip.inputMenu(['1-digit', '2-digit', '3-digit'], numbered=True, prompt="\nSelect the max number of digits for each number:\n")
+def main():
+    # Get the user's desired test mode and the max number of digits for each number.
+    print()
+    testMode = pyip.inputMenu(['Addition', 'Subtraction', 'Multiplication', 'Division', 'All'], numbered=True)
+    numOfDigits = pyip.inputMenu(['1-digit', '2-digit', '3-digit'], numbered=True, prompt="\nSelect the max number of digits for each number:\n")
 
 
-# Call program functions based on the user's settings.
-if testMode == "Addition":
-    if numOfDigits == "1-digit":
-        while questions < 10:
-            single_add()
-    elif numOfDigits == "2-digit":
-        while questions < 10:
-            double_add()
-    elif numOfDigits == "3-digit":
-        while questions < 10:
-            triple_add()
+    # Call program functions based on the user's settings.
+    if testMode == "Addition":
+        if numOfDigits == "1-digit":
+            while questions < 10:
+                single_add()
+        elif numOfDigits == "2-digit":
+            while questions < 10:
+                double_add()
+        elif numOfDigits == "3-digit":
+            while questions < 10:
+                triple_add()
 
-if testMode == "Subtraction":
-    if numOfDigits == "1-digit":
-        while questions < 10:
-            single_sub()
-    elif numOfDigits == "2-digit":
-        while questions < 10:
-            double_sub
-    elif numOfDigits == "3-digit":
-        while questions < 10:
-            triple_sub()
-                
-if testMode == "Multiplication":
-    if numOfDigits == "1-digit":
-        while questions < 10:
-            single_multi()
-    elif numOfDigits == "2-digit":
-        while questions < 10:
-            double_multi()
-    elif numOfDigits == "3-digit":
-        while questions < 10:
-            triple_multi()
-                
-if testMode == "Division":
-    if numOfDigits == "1-digit":
-        while questions < 10:
-            single_div()
-    elif numOfDigits == "2-digit":
-        while questions < 10:
-            double_div()
-    elif numOfDigits == "3-digit":
-        while questions < 10:
-            triple_div()
+    if testMode == "Subtraction":
+        if numOfDigits == "1-digit":
+            while questions < 10:
+                single_sub()
+        elif numOfDigits == "2-digit":
+            while questions < 10:
+                double_sub
+        elif numOfDigits == "3-digit":
+            while questions < 10:
+                triple_sub()
+                    
+    if testMode == "Multiplication":
+        if numOfDigits == "1-digit":
+            while questions < 10:
+                single_multi()
+        elif numOfDigits == "2-digit":
+            while questions < 10:
+                double_multi()
+        elif numOfDigits == "3-digit":
+            while questions < 10:
+                triple_multi()
+                    
+    if testMode == "Division":
+        if numOfDigits == "1-digit":
+            while questions < 10:
+                single_div()
+        elif numOfDigits == "2-digit":
+            while questions < 10:
+                double_div()
+        elif numOfDigits == "3-digit":
+            while questions < 10:
+                triple_div()
 
-if testMode == "All":
-    if numOfDigits == "1-digit":
-        while questions < 20:
-            single_add()
-            single_sub()
-            single_multi()
-            single_div()
-    elif numOfDigits == "2-digit":
-        while questions < 20:
-            double_add()
-            double_sub()
-            double_multi()
-            double_div()
-    elif numOfDigits == "3-digit":
-        while questions < 20:
-            triple_add()
-            triple_sub()
-            triple_multi()
-            triple_div()
+    if testMode == "All":
+        if numOfDigits == "1-digit":
+            while questions < 20:
+                single_add()
+                single_sub()
+                single_multi()
+                single_div()
+        elif numOfDigits == "2-digit":
+            while questions < 20:
+                double_add()
+                double_sub()
+                double_multi()
+                double_div()
+        elif numOfDigits == "3-digit":
+            while questions < 20:
+                triple_add()
+                triple_sub()
+                triple_multi()
+                triple_div()
 
 
-# Print results of test.
-print()
-print('-' * 30)
-print('\nHere are your results:')
-print(f'Questions: {questions}')
-print(f'Correct answers: {correctAnswers}')
-print(f'Incorrect answers: {incorrectAnswers}')
-time.sleep(5)
+    # Print results of test.
+    print()
+    print('-' * 30)
+    print('\nHere are your results:')
+    print(f'Questions: {questions}')
+    print(f'Correct answers: {correctAnswers}')
+    print(f'Incorrect answers: {incorrectAnswers}')
+    time.sleep(5)
+
+
+if __name__ == "__main__":
+    main()
