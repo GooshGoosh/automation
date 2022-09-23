@@ -8,6 +8,7 @@ import os
 import shutil
 import psutil
 import socket
+import time
 
 
 def check_disk_usage(disk):
@@ -81,6 +82,7 @@ def check_reboot_required():
 
 
 def main():
+    start_time = time.time()
     print('\nChecking Disk...\n')
     check_disk_usage('/')
 
@@ -98,6 +100,8 @@ def main():
     print('\nChecking Reboot...\n')
     check_reboot_required()
     print('\nChecks finished\nExiting...')
+    duration = time.time() - start_time
+    print(f'\nDuration: {duration}')
 
 
 if __name__ == "__main__":
