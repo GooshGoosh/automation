@@ -9,46 +9,58 @@ import shutil
 import psutil
 import socket
 import time
+import datetime
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+from reportlab.lib.styles import getSampleStyleSheet
 
 
 def check_disk_usage(disk):
-    du = shutil.disk_usage(disk)                                                       # Get a tuple of various disk info using shutil.
-    print('Total Disk Usage for \'{}\': {:.2f}G'.format(disk, (du.used / 2**30)))      # Print the total disk usage in G.
-    print('Free Space: {:.2f}G'.format(du.free / 2**30))                               # Print the free disk space in G.
-    if (du.free / du.total * 100) < 20:                                                # Print a message depending on the available disk space.
-        print('Available disk space less than 20%!')
+    diskInfo = []
+    du = shutil.disk_usage(disk)                                                                # Get a tuple of various disk info using shutil.
+    diskInfo.append('Total Disk Usage for \'{}\': {:.2f}G'.format(disk, (du.used / 2**30)))     # Print the total disk usage in G.
+    diskInfo.append('Free Space: {:.2f}G'.format(du.free / 2**30))                              # Print the free disk space in G.
+    if (du.free / du.total * 100) < 20:                                                         # Print a message depending on the available disk space.
+        diskInfo.append('Available disk space less than 20%!')
     else:
-        print('Disk Check: OK')
+        diskInfo.append('Disk Check: OK')
+    
+    return diskInfo
 
 
 def check_cpu_usage():
-    physicalCores = psutil.cpu_count(logical=False)                                 # Get the number of physical CPU cores
-    print('Current Number of CPU Cores (Physical): {}'.format(physicalCores))       # and print them to the screen.
-    logicalCores = psutil.cpu_count()                                               # Get the number of logical CPU cores (cores x threads per core)
-    print('Current Number of CPU Cores (Logical): {}'.format(logicalCores))         # and print them to the screen.
+    cpuInfo = []
+    physicalCores = psutil.cpu_count(logical=False)                                         # Get the number of physical CPU cores
+    cpuInfo.append('Current Number of CPU Cores (Physical): {}'.format(physicalCores))      # and print them to the screen.
+    logicalCores = psutil.cpu_count()                                                       # Get the number of logical CPU cores (cores x threads per core)
+    cpuInfo.append('Current Number of CPU Cores (Logical): {}'.format(logicalCores))        # and print them to the screen.
     usage = psutil.cpu_percent(1)
-    if usage > 75:                                                                  # Check CPU usage and print a message depending on the
-        print('WARNING! CPU usage over 75%!')                                       # current CPU usage.
+    if usage > 75:                                                                          # Check CPU usage and print a message depending on the
+        cpuInfo.append('WARNING! CPU usage over 75%!')                                      # current CPU usage.
     else:
-        print('CPU Check: OK')
+        cpuInfo.append('CPU Check: OK')
+    
+    return cpuInfo
         
         
 def check_memory_usage():
+    memInfo = []
     mem = psutil.virtual_memory()                                          # Get a tuple of system memory info using psutil.
-    print('Total Memory: {:.2f}G'.format(mem.total / 2**30))               # Print the total system memory (excluding swap) in G.
-    print('Available Memory: {:.2f}G'.format(mem.available / 2**30))       # Print the available memory (excluding swap) in G.
+    memInfo.append('Total Memory: {:.2f}G'.format(mem.total / 2**30))               # Print the total system memory (excluding swap) in G.
+    memInfo.append('Available Memory: {:.2f}G'.format(mem.available / 2**30))       # Print the available memory (excluding swap) in G.
     if mem.available < (1 * 2**30):                                        # Print a message if the available memory is lower than 1G.
-        print('WARNING! System memory lower than 1G!')
+        memInfo.append('WARNING! System memory lower than 1G!')
     else:
-        print('Memory Check: OK')
+        memInfo.append('Memory Check: OK')
+    
+    return memInfo
 
 
 def check_localhost():
     localhost = socket.gethostbyname('localhost')       # Check if the network interface is up and working for the system.
     if localhost == "127.0.0.1":
-        print('localhost: 127.0.0.1')
+        return 'localhost: 127.0.0.1'
     else:
-        print('localhost: Failed')
+        return 'localhost: Failed'
         
         
 def check_internet(host='8.8.8.8', port=53, timeout=3):     # Check if the system can reach the internet. Use an IPv4 address to prevent DNS errors.
@@ -59,46 +71,73 @@ def check_internet(host='8.8.8.8', port=53, timeout=3):     # Check if the syste
     """
     try:
         socket.setdefaulttimeout(timeout)
-        socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect((host, port))     # Test for a connection to 8.8.8.8 on port 53 (DNS)
-        print('Internet Check: OK')                                                 # Uses one of Google's public DNS servers.
+        socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect((host, port))     # Test for a connection to 8.8.8.8 on port 53 (DNS).
+        return 'Internet Check: OK'                                                 # Uses one of Google's public DNS servers.
     except socket.error as ex:
-        print('Internet Check: Failed')
+        return 'Internet Check: Failed'
 
 
 def check_DNS(host='google-public-dns-a.google.com', timeout=3):        # Check if DNS is working properly and the system is correctly resolving host names.
     socket.setdefaulttimeout(timeout)                                   # Uses one of Google's public DNS servers.
     googleDNS = socket.gethostbyname(host)
     if googleDNS == '8.8.8.8':
-        print('DNS Check: OK')
+        return 'DNS Check: OK'
     else:
-        print('DNS Check: Failed')
+        return 'DNS Check: Failed'
 
 
 def check_reboot_required():
     if os.path.exists('/var/run/reboot-required'):      # Check if the 'reboot-required' file exists on the system
-        print('REBOOT REQUIRED')                        # and print a message depending on if it exists or not.
+        return 'REBOOT REQUIRED'                        # and print a message depending on if it exists or not.
     else:
-        print('No reboot required')
+        return 'No reboot required'
+
+
+def generate_report(dataList):
+    report = SimpleDocTemplate(os.path.join(os.path.expanduser('~'), 'system-resources-report.pdf'))
+    styles = getSampleStyleSheet()
+    Story = []
+    today = datetime.datetime.now()
+    formatTime = today.strftime("%A, %B %d, %Y, %H:%M:%S")
+    
+    reportTitle = Paragraph('System Resources Report for {}'.format(formatTime), styles["h1"])
+    Story.append(reportTitle)
+    
+    for data in dataList:
+        Story.append(Spacer(1, 12))
+        if type(data) is list:
+            for line in data:
+                Story.append(Paragraph(line, styles["Normal"]))
+        else:
+            Story.append(Paragraph(data, styles["Normal"]))
+        
+    report.build(Story)
+    print('Report generated at \'{}\''.format(os.path.join(os.path.expanduser('~'), 'system-resources-report.pdf')))
 
 
 def main():
+    dataList = []
     start_time = time.time()
     print('\nChecking Disk...\n')
-    check_disk_usage('/')
+    dataList.append(check_disk_usage('/'))
 
     print('\nChecking CPU...\n')
-    check_cpu_usage()
+    dataList.append(check_cpu_usage())
 
     print('\nChecking Memory...\n')
-    check_memory_usage()
+    dataList.append(check_memory_usage())
 
     print('\nChecking Internet Connection...\n')
-    check_localhost()   
-    check_internet()
-    check_DNS()
+    dataList.append(check_localhost())
+    dataList.append(check_internet())
+    dataList.append(check_DNS())
 
     print('\nChecking Reboot...\n')
-    check_reboot_required()
+    dataList.append(check_reboot_required())
+    
+    print('\nGenerating Report...\n')
+    generate_report(dataList)
+    
     print('\nChecks finished\nExiting...')
     duration = time.time() - start_time
     print(f'\nDuration: {duration}')
