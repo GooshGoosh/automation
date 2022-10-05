@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
 # checkSystemResources.py - Checks the available disk space, memory, and current CPU usage of the system.
-# Checks the total and available system memory (excluding swap) if a system restart is required.
+# Checks the total and available system memory (excluding swap) and if a system restart is required.
+# Creates a PDF report of the results, with a timestamp for when the script was executed, in the user's home directory.
 
 
 import os
@@ -44,10 +45,10 @@ def check_cpu_usage():
         
 def check_memory_usage():
     memInfo = []
-    mem = psutil.virtual_memory()                                          # Get a tuple of system memory info using psutil.
+    mem = psutil.virtual_memory()                                                   # Get a tuple of system memory info using psutil.
     memInfo.append('Total Memory: {:.2f}G'.format(mem.total / 2**30))               # Print the total system memory (excluding swap) in G.
     memInfo.append('Available Memory: {:.2f}G'.format(mem.available / 2**30))       # Print the available memory (excluding swap) in G.
-    if mem.available < (1 * 2**30):                                        # Print a message if the available memory is lower than 1G.
+    if mem.available < (1 * 2**30):                                                 # Print a message if the available memory is lower than 1G.
         memInfo.append('WARNING! System memory lower than 1G!')
     else:
         memInfo.append('Memory Check: OK')
@@ -94,23 +95,25 @@ def check_reboot_required():
 
 
 def generate_report(dataList):
+    # Create the report object/name, the list of data to be generated into the report, as well as get the current time and format it.
     report = SimpleDocTemplate(os.path.join(os.path.expanduser('~'), 'system-resources-report.pdf'))
     styles = getSampleStyleSheet()
     Story = []
     today = datetime.datetime.now()
     formatTime = today.strftime("%A, %B %d, %Y, %H:%M:%S")
     
-    reportTitle = Paragraph('System Resources Report for {}'.format(formatTime), styles["h1"])
+    reportTitle = Paragraph('System Resources Report for {}'.format(formatTime), styles["h1"])      # Create the report title/header.
     Story.append(reportTitle)
     
     for data in dataList:
         Story.append(Spacer(1, 12))
-        if type(data) is list:
-            for line in data:
+        if type(data) is list:                                      # If the data is of type list, loop through each line of the
+            for line in data:                                       # list and add it to the Story.
                 Story.append(Paragraph(line, styles["Normal"]))
         else:
-            Story.append(Paragraph(data, styles["Normal"]))
-        
+            Story.append(Paragraph(data, styles["Normal"]))         # Add any lines to the Story that aren't of type list.
+    
+    # Build the report and print the location/name of the report generated.
     report.build(Story)
     print('Report generated at \'{}\''.format(os.path.join(os.path.expanduser('~'), 'system-resources-report.pdf')))
 
