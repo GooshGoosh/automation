@@ -22,6 +22,7 @@ import os
 import time
 import pyinputplus as pyip
 import csv
+import json
 
 
 # Get the name of the currently logged in user and create a path to the directory
@@ -40,7 +41,6 @@ playerCurrentHealth = 0     # Store the player's current health.
 playerAttack = 0            # Store the player's attack rating of their weapon(s).
 playerShield = False        # Store the status of a shield in the player's left hand.
 stats = {
-    'Class:': "",
     'Vig:': 0,
     'Mnd:': 0,
     'End:': 0,
@@ -240,19 +240,15 @@ if __name__ == "__main__":
     time.sleep(0.5)
     os.system('cls' if os.name == 'nt' else 'clear')
 
+    with open(os.path.join(classesPath, character.lower() + '.json')) as jsonFile:                  # Join the path to the classes .json files and the chosen class to get the
+        classData = json.load(jsonFile)                                                             # .json file for the chosen class and load the json file data into classData.
 
-    character = character.lower()                                                                   # Set the character/class choice to all lowercase letters.
-    with open(os.path.join(classesPath, character + '.csv')) as csvfile:                            # Join the path to the classes .csv files and the chosen class
-        classReader = csv.reader(csvfile)                                                           # to get the .csv for the chosen class.
-        for row in classReader:
-            if row[0] in stats.keys():                                                              # Store the player's stats
-                if row[0] == "Class:":
-                    stats[row[0]] = row[1]
-                else:
-                    stats[row[0]] = int(row[1])                                              
-            elif row[0] in equipment.keys():                                                        # Fill the slots for the player's equipment.
-                equipment[row[0]] = row[1]
-    csvfile.close()
+    for k, v in classData['Stats'].items():                                                         # Store the player's stats.
+            stats[k] = v
+                
+    for k, v in classData['Equipment'].items():                                                     # Fill the slots for the player's equipment.
+        if k in equipment.keys():
+            equipment[k] = v
 
     with open(starterWeaponsPath) as csvfile:                                                       # Search through the starter weapons file to find the weapon
         weaponReader =csv.reader(csvfile)                                                           # that is in the player's right hand and give the player that
@@ -265,9 +261,10 @@ if __name__ == "__main__":
 
     playerMaxHealth = (stats['Vig:'] * 10)                                                          # Get the player's max health.
     playerCurrentHealth = playerMaxHealth                                                           # Set the player's current health equal to max health.
-    if "shield" in equipment['Left Hand:'].lower():                                                 # Determine if the player has a shield in their left hand.
+    if "shield" or "buckler" in equipment['Left Hand:'].lower():                                                 # Determine if the player has a shield in their left hand.
         playerShield = True
 
+    print('Class: {}\n'.format(character))
     for k, v in stats.items():                                                                      # Print the player's stats.
         print(k.ljust(7, ' ') + str(v))
     print(f'\nHP: {playerMaxHealth}')
