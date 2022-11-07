@@ -104,7 +104,12 @@ def saveBoard(board, moves, player1, player2):
     print('Chess game saved in {} as {}'.format(chessDir, fileName))
     
     
-def printBoard(board):
+def printBoard(board, playerWhite, playerBlack):
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print('White: {}'.format(playerWhite))
+    print('Black: {}'.format(playerBlack))
+    print()
+    
     # Create a list of dictionaries for each row of chess board spaces.
     listOfSpaces = [
         {   '1a': board['1a'], '1b': board['1b'], '1c': board['1c'], '1d': board['1d'],
@@ -139,7 +144,7 @@ def printBoard(board):
     print()
     
     
-def 
+# TODO: Create a function that allows either playerWhite or playerBlack to take a turn.
     
     
 def main():
@@ -155,7 +160,7 @@ def main():
     
     chessBoard, playerMoves = loadBoard()
     
-    printBoard(chessBoard)
+    printBoard(chessBoard, playerWhite, playerBlack)
     
     saveBoard(chessBoard, playerMoves, playerWhite, playerBlack)
     
