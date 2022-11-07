@@ -7,15 +7,15 @@ allow them to type in the file that they would like to load. If the 'chess-games
 created.
 
 The players will take turns and on each turn they will be given two options: move a piece on a specified space or save and exit the game. If the player chooses to move
-a piece on a specified space, they will then be given the option to cancel the move and be brought back to the previous options or to choose a space that they would
-like to move their piece. Players will have to select the space that they would like to interact with that contains the piece that they would like to move.
-e.g. if the white queen is on space h3, the player would type in 'h3' and then type in the space that they would like to move it to such as 'h6'.
+a piece on a specified space, they will then be given a prompt to select a space (piece) that they would like to move and then to choose a space that they would
+like to move their piece to. Players will have to select the space that they would like to interact with that contains the piece that they would like to move.
+e.g. if the white queen is on space 3h, the player would type in '3h' and then type in the space that they would like to move it to such as '6h'.
 If the player chooses the option to save and quit, the program will save the current board configuration and number of moves for each player to a json file.
 The current configuration of the chess board will be printed out to the screen after each player's turn.
 
 WARNING: This program assumes that the player's know how to play chess and intend to play it fairly without exploiting the program. This program does not check if
 any moves made by either player are legal or if the correct player is moving their intended piece (i.e. the black player moving the white pieces). The program only
-ensures that the players interact with legal spaces on the chess board and do not try to move pieces to and from invalid board spaces such as z7 or r23.
+ensures that the players interact with legal spaces on the chess board and do not try to move pieces to and from invalid board spaces such as 7z or 23r.
 '''
 
 import json
@@ -104,11 +104,11 @@ def saveBoard(board, moves, player1, player2):
     print('Chess game saved in {} as {}'.format(chessDir, fileName))
     
     
-def printBoard(board, playerWhite, playerBlack):
+def printBoard(board, player1, player2):
     os.system('cls' if os.name == 'nt' else 'clear')
-    print('White: {}'.format(playerWhite))
-    print('Black: {}'.format(playerBlack))
-    print()
+    print('White: {}'.format(player1))
+    print('Black: {}'.format(player2))
+    print('\n')
     
     # Create a list of dictionaries for each row of chess board spaces.
     listOfSpaces = [
@@ -144,8 +144,49 @@ def printBoard(board, playerWhite, playerBlack):
     print()
     
     
-# TODO: Create a function that allows either playerWhite or playerBlack to take a turn.
-    
+def chessTurns(chessBoard, playerMoves, playerWhite, playerBlack):
+    while True:
+        if playerMoves['playerWhite'] == playerMoves['playerBlack']:
+            printBoard(chessBoard, playerWhite, playerBlack)
+            print('{}\'s turn...\n'.format(playerWhite))
+            startingSpace = ''
+            destinationSpace = ''
+            move = pyip.inputMenu(['Move Piece', 'Save and Exit'], numbered=True)
+            
+            if move == 'Move Piece':
+                while startingSpace not in chessBoard.keys():
+                    startingSpace = pyip.inputStr(prompt='\nType the space that the piece you would like to move resides in (e.g. 2a) > ')
+                while destinationSpace not in chessBoard.keys() and destinationSpace != startingSpace:
+                    destinationSpace = pyip.inputStr(prompt='\nType the space that you would like to move the piece to (e.g. 3a) > ')
+                chessBoard[destinationSpace] = chessBoard[startingSpace]
+                chessBoard[startingSpace] = '  '
+                playerMoves['playerWhite'] += 1
+            elif move == 'Save and Exit':
+                saveBoard(chessBoard, playerMoves, playerWhite, playerBlack)
+                sys.exit(0)
+        elif playerMoves['playerWhite'] > playerMoves['playerBlack']:
+            printBoard(chessBoard, playerWhite, playerBlack)
+            print('{}\'s turn...\n'.format(playerBlack))
+            startingSpace = ''
+            destinationSpace = ''
+            move = pyip.inputMenu(['Move Piece', 'Save and Exit'], numbered=True)
+            
+            if move == 'Move Piece':
+                while startingSpace not in chessBoard.keys():
+                    startingSpace = pyip.inputStr(prompt='\nType the space that the piece you would like to move resides in (e.g. 2a) > ')
+                while destinationSpace not in chessBoard.keys() and destinationSpace != startingSpace:
+                    destinationSpace = pyip.inputStr(prompt='\nType the space that you would like to move the piece to (e.g. 3a) > ')
+                chessBoard[destinationSpace] = chessBoard[startingSpace]
+                chessBoard[startingSpace] = '  '
+                playerMoves['playerBlack'] += 1
+            elif move == 'Save and Exit':
+                saveBoard(chessBoard, playerMoves, playerWhite, playerBlack)
+                sys.exit(0)
+        else:
+            print('\nERROR: Black has more moves taken than White! Exiting program with an error!')
+            sys.exit(1)
+                
+                
     
 def main():
     
@@ -159,10 +200,7 @@ def main():
     print('Player 2: {}'.format(playerBlack))
     
     chessBoard, playerMoves = loadBoard()
-    
-    printBoard(chessBoard, playerWhite, playerBlack)
-    
-    saveBoard(chessBoard, playerMoves, playerWhite, playerBlack)
+    chessTurns(chessBoard, playerMoves, playerWhite, playerBlack)
     
     
 if __name__ == "__main__":
