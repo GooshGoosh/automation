@@ -15,6 +15,8 @@ def loadBoard():
     # Set the path to look for saved chess games.
     userHome = os.path.expanduser('~')
     chessDir = os.path.abspath(os.path.join(userHome, 'chess-games'))
+    board = {}
+    moves = {}
     
     # Check if the chess directory already exists and, if not, create it.
     if not os.path.isdir(chessDir):
@@ -29,6 +31,7 @@ def loadBoard():
     if answer == 'no':
         print('Loading default chess board...\n')
         time.sleep(1)
+        
         board = {
             '1a': 'wr', '1b': 'wk', '1c': 'wb', '1d': 'WK', '1e': 'wq', '1f': 'wb', '1g': 'wk', '1h': 'wr',
             '2a': 'wp', '2b': 'wp', '2c': 'wp', '2d': 'wp', '2e': 'wp', '2f': 'wp', '2g': 'wp', '2h': 'wp',
@@ -39,6 +42,9 @@ def loadBoard():
             '7a': 'bp', '7b': 'bp', '7c': 'bp', '7d': 'bp', '7e': 'bp', '7f': 'bp', '7g': 'bp', '7h': 'bp',
             '8a': 'br', '8b': 'bk', '8c': 'bb', '8d': 'BK', '8e': 'bq', '8f': 'bb', '8g': 'bk', '8h': 'br'
         }   # Dictionary for a new, freshly set up chess board.
+        
+        moves = {'playerWhite': 0, 'playerBlack': 0}
+        
     elif answer == 'yes':
         try:
             print()
@@ -47,16 +53,23 @@ def loadBoard():
             
             print('Loading chess board from file...\n')
             with open(os.path.join(chessDir, chessFile), 'r') as file:
-                board = json.load(file)
+                chessDicts = json.load(file)
+            
+            for k, v in chessDicts['Spaces'].items():
+                board[k] = v
+            
+            for k, v in chessDicts['Moves'].items():
+                moves[k] = v
+                
             time.sleep(1)
         except FileNotFoundError:
             print('A file for the given name was not found.\n')
             sys.exit(1)
         
-    return board
+    return board, moves
     
     
-def saveBoard(board, player1, player2):
+def saveBoard(board, moves, player1, player2):
     # Set the path to look for saved chess games.
     userHome = os.path.expanduser('~')
     chessDir = os.path.abspath(os.path.join(userHome, 'chess-games'))
@@ -121,11 +134,11 @@ def main():
     print('Player 1: {}'.format(playerWhite))
     print('Player 2: {}'.format(playerBlack))
     
-    chessBoard = loadBoard()
+    chessBoard, playerMoves = loadBoard()
     
     printBoard(chessBoard)
     
-    saveBoard(chessBoard, playerWhite, playerBlack)
+    saveBoard(chessBoard, playerMoves, playerWhite, playerBlack)
     
     
 if __name__ == "__main__":
