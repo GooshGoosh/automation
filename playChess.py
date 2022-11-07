@@ -8,12 +8,17 @@ import json
 import os
 import time
 import sys
+import datetime
 
 
 def loadBoard():
     # Set the path to look for saved chess games.
     userHome = os.path.expanduser('~')
     chessDir = os.path.abspath(os.path.join(userHome, 'chess-games'))
+    
+    # Check if the chess directory already exists and, if not, create it.
+    if not os.path.isdir(chessDir):
+        os.makedirs(chessDir)
     
     # Check if the players have a saved game file.
     time.sleep(0.5)
@@ -55,7 +60,10 @@ def saveBoard(board, player1, player2):
     # Set the path to look for saved chess games.
     userHome = os.path.expanduser('~')
     chessDir = os.path.abspath(os.path.join(userHome, 'chess-games'))
-    fileName = '{}-{}-chess.json'.format(player1.lower(), player2.lower())
+    today = datetime.datetime.now()
+    formatTime = today.strftime("%m-%d-%y")
+    fileName = '{}-{}-chess-{}.json'.format(player1.lower(), player2.lower(), formatTime)
+    
     
     print('Saving chess game to file...\n')
     time.sleep(1)
