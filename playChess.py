@@ -1,14 +1,29 @@
 #!/usr/bin/env python3
 
-# TODO: Create a program that takes a chess board (pieces and spaces) and writes them to a file. The file will be a csv file and will be named after both players.
-# The program will give two players the option to start a new game or to load a game from a file.
-# Optional: the program will print a chess board to the screen after each player moves a piece.
+''' playChess.py - A program that takes a chess board (pieces and spaces) and writes them to a file. The file will be a json file and will be named after both players
+followed by the date (mm-dd-yy) that the file was saved. The two player are given the option to either start a new game or load a game that was previously saved.
+If the players decide to load from a previously saved game, they will be given a list of files in the 'chess-games' directory in the user home directory that will
+allow them to type in the file that they would like to load. If the 'chess-games' directory is not found within the user's home directory, the directory will be
+created.
+
+The players will take turns and on each turn they will be given two options: move a piece on a specified space or save and exit the game. If the player chooses to move
+a piece on a specified space, they will then be given the option to cancel the move and be brought back to the previous options or to choose a space that they would
+like to move their piece. Players will have to select the space that they would like to interact with that contains the piece that they would like to move.
+e.g. if the white queen is on space h3, the player would type in 'h3' and then type in the space that they would like to move it to such as 'h6'.
+If the player chooses the option to save and quit, the program will save the current board configuration and number of moves for each player to a json file.
+The current configuration of the chess board will be printed out to the screen after each player's turn.
+
+WARNING: This program assumes that the player's know how to play chess and intend to play it fairly without exploiting the program. This program does not check if
+any moves made by either player are legal or if the correct player is moving their intended piece (i.e. the black player moving the white pieces). The program only
+ensures that the players interact with legal spaces on the chess board and do not try to move pieces to and from invalid board spaces such as z7 or r23.
+'''
 
 import json
 import os
 import time
 import sys
 import datetime
+import pyinputplus as pyip
 
 
 def loadBoard():
@@ -55,10 +70,10 @@ def loadBoard():
             with open(os.path.join(chessDir, chessFile), 'r') as file:
                 chessDicts = json.load(file)
             
-            for k, v in chessDicts['Spaces'].items():
+            for k, v in chessDicts[0].items():
                 board[k] = v
             
-            for k, v in chessDicts['Moves'].items():
+            for k, v in chessDicts[1].items():
                 moves[k] = v
                 
             time.sleep(1)
@@ -76,12 +91,13 @@ def saveBoard(board, moves, player1, player2):
     today = datetime.datetime.now()
     formatTime = today.strftime("%m-%d-%y")
     fileName = '{}-{}-chess-{}.json'.format(player1.lower(), player2.lower(), formatTime)
+    dictsToJSON = [board, moves]
     
     
     print('Saving chess game to file...\n')
     time.sleep(1)
 
-    jsonData = json.dumps(board, indent=4)
+    jsonData = json.dumps(dictsToJSON, indent=4)
     with open(os.path.join(chessDir, fileName), 'w') as file:
         file.write(jsonData)
     
@@ -121,6 +137,9 @@ def printBoard(board):
             print('{} | '.format(v), end='')
         print('\n' + ('-' * 43))
     print()
+    
+    
+def 
     
     
 def main():
