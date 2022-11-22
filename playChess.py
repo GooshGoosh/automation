@@ -32,6 +32,7 @@ def loadBoard():
     chessDir = os.path.abspath(os.path.join(userHome, 'chess-games'))
     board = {}
     moves = {}
+    removedFromPlay = {}
     
     # Check if the chess directory already exists and, if not, create it.
     if not os.path.isdir(chessDir):
@@ -60,6 +61,8 @@ def loadBoard():
         
         moves = {'playerWhite': 0, 'playerBlack': 0}
         
+        removedFromPlay = {'removedWhite': [], 'removedBlack': []}
+        
     elif answer == 'yes':
         try:
             print()
@@ -76,22 +79,25 @@ def loadBoard():
             for k, v in chessDicts[1].items():
                 moves[k] = v
                 
+            for k, v in chessDicts[2].items():
+                removedFromPlay[k] = v
+                
             time.sleep(1)
         except FileNotFoundError:
             print('A file for the given name was not found.\n')
             sys.exit(1)
         
-    return board, moves
+    return board, moves, removedFromPlay
     
     
-def saveBoard(board, moves, player1, player2):
+def saveBoard(board, moves, removedPieces, player1, player2):
     # Set the path to look for saved chess games.
     userHome = os.path.expanduser('~')
     chessDir = os.path.abspath(os.path.join(userHome, 'chess-games'))
     today = datetime.datetime.now()
     formatTime = today.strftime("%m-%d-%y")
     fileName = '{}-{}-chess-{}.json'.format(player1.lower(), player2.lower(), formatTime)
-    dictsToJSON = [board, moves]
+    dictsToJSON = [board, moves, removedPieces]
     
     
     print('Saving chess game to file...\n')
@@ -104,7 +110,7 @@ def saveBoard(board, moves, player1, player2):
     print('Chess game saved in {} as {}'.format(chessDir, fileName))
     
     
-def printBoard(board, player1, player2):
+def printBoard(board, removedPieces, player1, player2):
     os.system('cls' if os.name == 'nt' else 'clear')
     print('White: {}'.format(player1))
     print('Black: {}'.format(player2))
@@ -143,11 +149,16 @@ def printBoard(board, player1, player2):
         print('\n' + ('-' * 43))
     print()
     
+    print('White pieces removed from play: {}'.format(', '.join(removedPieces['removedWhite'])))
+    print('Black pieces removed from play: {}'.format(', '.join(removedPieces['removedBlack'])))
+    print()
+        
     
-def chessTurns(chessBoard, playerMoves, playerWhite, playerBlack):
+def chessTurns(chessBoard, playerMoves, removedPieces, playerWhite, playerBlack):
     while True:
         if playerMoves['playerWhite'] == playerMoves['playerBlack']:
-            printBoard(chessBoard, playerWhite, playerBlack)
+            time.sleep(0.75)
+            printBoard(chessBoard, removedPieces, playerWhite, playerBlack)
             print('{}\'s turn...\n'.format(playerWhite))
             startingSpace = ''
             destinationSpace = ''
@@ -158,14 +169,17 @@ def chessTurns(chessBoard, playerMoves, playerWhite, playerBlack):
                     startingSpace = pyip.inputStr(prompt='\nType the space that the piece you would like to move resides in (e.g. 2a) > ')
                 while destinationSpace not in chessBoard.keys() and destinationSpace != startingSpace:
                     destinationSpace = pyip.inputStr(prompt='\nType the space that you would like to move the piece to (e.g. 3a) > ')
+                if chessBoard[destinationSpace] != '  ':
+                    removedPieces['removedBlack'].append(chessBoard[destinationSpace])
                 chessBoard[destinationSpace] = chessBoard[startingSpace]
                 chessBoard[startingSpace] = '  '
                 playerMoves['playerWhite'] += 1
             elif move == 'Save and Exit':
-                saveBoard(chessBoard, playerMoves, playerWhite, playerBlack)
+                saveBoard(chessBoard, playerMoves, removedPieces, playerWhite, playerBlack)
                 sys.exit(0)
         elif playerMoves['playerWhite'] > playerMoves['playerBlack']:
-            printBoard(chessBoard, playerWhite, playerBlack)
+            time.sleep(0.75)
+            printBoard(chessBoard, removedPieces, playerWhite, playerBlack)
             print('{}\'s turn...\n'.format(playerBlack))
             startingSpace = ''
             destinationSpace = ''
@@ -176,11 +190,13 @@ def chessTurns(chessBoard, playerMoves, playerWhite, playerBlack):
                     startingSpace = pyip.inputStr(prompt='\nType the space that the piece you would like to move resides in (e.g. 2a) > ')
                 while destinationSpace not in chessBoard.keys() and destinationSpace != startingSpace:
                     destinationSpace = pyip.inputStr(prompt='\nType the space that you would like to move the piece to (e.g. 3a) > ')
+                if chessBoard[destinationSpace] != '  ':
+                    removedPieces['removedWhite'].append(chessBoard[destinationSpace])
                 chessBoard[destinationSpace] = chessBoard[startingSpace]
                 chessBoard[startingSpace] = '  '
                 playerMoves['playerBlack'] += 1
             elif move == 'Save and Exit':
-                saveBoard(chessBoard, playerMoves, playerWhite, playerBlack)
+                saveBoard(chessBoard, playerMoves, removedPieces, playerWhite, playerBlack)
                 sys.exit(0)
         else:
             print('\nERROR: Black has more moves taken than White! Exiting program with an error!')
@@ -190,7 +206,7 @@ def chessTurns(chessBoard, playerMoves, playerWhite, playerBlack):
     
 def main():
     
-    # Clear the screen and get player names for while/black.
+    # Clear the screen and get player names for white/black.
     os.system('cls' if os.name == 'nt' else 'clear')
     playerWhite = input('Enter a player name for White: ')
     time.sleep(0.5)
@@ -199,8 +215,8 @@ def main():
     print('Player 1: {}'.format(playerWhite))
     print('Player 2: {}'.format(playerBlack))
     
-    chessBoard, playerMoves = loadBoard()
-    chessTurns(chessBoard, playerMoves, playerWhite, playerBlack)
+    chessBoard, playerMoves, removedPieces = loadBoard()
+    chessTurns(chessBoard, playerMoves, removedPieces, playerWhite, playerBlack)
     
     
 if __name__ == "__main__":
