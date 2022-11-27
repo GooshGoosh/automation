@@ -26,7 +26,7 @@ import datetime
 import pyinputplus as pyip
 
 
-def loadBoard():
+def load_board():
     # Set the path to look for saved chess games.
     userHome = os.path.expanduser('~')
     chessDir = os.path.abspath(os.path.join(userHome, 'chess-games'))
@@ -90,7 +90,7 @@ def loadBoard():
     return board, moves, removedFromPlay
     
     
-def saveBoard(board, moves, removedPieces, player1, player2):
+def save_board(board, moves, removedPieces, player1, player2):
     # Set the path to look for saved chess games.
     userHome = os.path.expanduser('~')
     chessDir = os.path.abspath(os.path.join(userHome, 'chess-games'))
@@ -110,7 +110,7 @@ def saveBoard(board, moves, removedPieces, player1, player2):
     print('Chess game saved in {} as {}'.format(chessDir, fileName))
     
     
-def printBoard(board, removedPieces, player1, player2):
+def print_board(board, removedPieces, player1, player2):
     rowNum = 8
     os.system('cls' if os.name == 'nt' else 'clear')
     print('White: {}'.format(player1))
@@ -156,7 +156,7 @@ def printBoard(board, removedPieces, player1, player2):
     print()
         
     
-def chessTurns(chessBoard, playerMoves, removedPieces, playerWhite, playerBlack):
+def chess_turns(chessBoard, playerMoves, removedPieces, playerWhite, playerBlack):
     whiteFinalRankSpaces = ['a8', 'b8', 'c8', 'd8', 'e8', 'f8', 'g8', 'h8']
     blackFinalRankSpaces = ['a1', 'b1', 'c1', 'd1', 'e1', 'f1', 'g1', 'h1']
     pieceMoved = ''
@@ -164,7 +164,7 @@ def chessTurns(chessBoard, playerMoves, removedPieces, playerWhite, playerBlack)
     while True:
         if playerMoves['playerWhite'] == playerMoves['playerBlack']:
             time.sleep(0.75)
-            printBoard(chessBoard, removedPieces, playerWhite, playerBlack)
+            print_board(chessBoard, removedPieces, playerWhite, playerBlack)
             print('{}\'s turn...\n'.format(playerWhite))
             startingSpace = ''
             destinationSpace = ''
@@ -189,11 +189,11 @@ def chessTurns(chessBoard, playerMoves, removedPieces, playerWhite, playerBlack)
                     
                 playerMoves['playerWhite'] += 1
             elif move == 'Save and Exit':
-                saveBoard(chessBoard, playerMoves, removedPieces, playerWhite, playerBlack)
+                save_board(chessBoard, playerMoves, removedPieces, playerWhite, playerBlack)
                 sys.exit(0)
         elif playerMoves['playerWhite'] > playerMoves['playerBlack']:
             time.sleep(0.75)
-            printBoard(chessBoard, removedPieces, playerWhite, playerBlack)
+            print_board(chessBoard, removedPieces, playerWhite, playerBlack)
             print('{}\'s turn...\n'.format(playerBlack))
             startingSpace = ''
             destinationSpace = ''
@@ -218,7 +218,7 @@ def chessTurns(chessBoard, playerMoves, removedPieces, playerWhite, playerBlack)
                     
                 playerMoves['playerBlack'] += 1
             elif move == 'Save and Exit':
-                saveBoard(chessBoard, playerMoves, removedPieces, playerWhite, playerBlack)
+                save_board(chessBoard, playerMoves, removedPieces, playerWhite, playerBlack)
                 sys.exit(0)
         else:
             print('\nERROR: Black has more moves taken than White! Exiting program with an error!')
@@ -248,8 +248,8 @@ def main():
     print('Player 1: {}'.format(playerWhite))
     print('Player 2: {}'.format(playerBlack))
     
-    chessBoard, playerMoves, removedPieces = loadBoard()
-    chessTurns(chessBoard, playerMoves, removedPieces, playerWhite, playerBlack)
+    chessBoard, playerMoves, removedPieces = load_board()
+    chess_turns(chessBoard, playerMoves, removedPieces, playerWhite, playerBlack)
     
     
 if __name__ == "__main__":
