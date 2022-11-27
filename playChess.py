@@ -157,6 +157,10 @@ def printBoard(board, removedPieces, player1, player2):
         
     
 def chessTurns(chessBoard, playerMoves, removedPieces, playerWhite, playerBlack):
+    whiteFinalRankSpaces = ['a8', 'b8', 'c8', 'd8', 'e8', 'f8', 'g8', 'h8']
+    blackFinalRankSpaces = ['a1', 'b1', 'c1', 'd1', 'e1', 'f1', 'g1', 'h1']
+    pieceMoved = ''
+    
     while True:
         if playerMoves['playerWhite'] == playerMoves['playerBlack']:
             time.sleep(0.75)
@@ -169,12 +173,20 @@ def chessTurns(chessBoard, playerMoves, removedPieces, playerWhite, playerBlack)
             if move == 'Move Piece':
                 while startingSpace not in chessBoard.keys():
                     startingSpace = pyip.inputStr(prompt='\nType the space that the piece you would like to move resides in (e.g. a2) > ')
+                    pieceMoved = chessBoard[startingSpace]
                 while destinationSpace not in chessBoard.keys() and destinationSpace != startingSpace:
                     destinationSpace = pyip.inputStr(prompt='\nType the space that you would like to move the piece to (e.g. a3) > ')
                 if chessBoard[destinationSpace] != '  ':
                     removedPieces['removedBlack'].append(chessBoard[destinationSpace])
                 chessBoard[destinationSpace] = chessBoard[startingSpace]
                 chessBoard[startingSpace] = '  '
+                
+                if pieceMoved == 'wp' and destinationSpace in whiteFinalRankSpaces:                 # Check if a white pawn has reached its final rank and is due for a promotion.
+                    print('\nYour pawn is due for a promotion!')
+                    time.sleep(0.75)
+                    chessBoard = pawn_promotion(chessBoard, destinationSpace, player='white')       # Call the function to promote a pawn.
+                    removedPieces['removedWhite'].append(pieceMoved)                                # Add a pawn to the removed pieces list for white pieces.
+                    
                 playerMoves['playerWhite'] += 1
             elif move == 'Save and Exit':
                 saveBoard(chessBoard, playerMoves, removedPieces, playerWhite, playerBlack)
@@ -190,12 +202,20 @@ def chessTurns(chessBoard, playerMoves, removedPieces, playerWhite, playerBlack)
             if move == 'Move Piece':
                 while startingSpace not in chessBoard.keys():
                     startingSpace = pyip.inputStr(prompt='\nType the space that the piece you would like to move resides in (e.g. a7) > ')
+                    pieceMoved = chessBoard[startingSpace]
                 while destinationSpace not in chessBoard.keys() and destinationSpace != startingSpace:
                     destinationSpace = pyip.inputStr(prompt='\nType the space that you would like to move the piece to (e.g. a6) > ')
                 if chessBoard[destinationSpace] != '  ':
                     removedPieces['removedWhite'].append(chessBoard[destinationSpace])
                 chessBoard[destinationSpace] = chessBoard[startingSpace]
                 chessBoard[startingSpace] = '  '
+                
+                if pieceMoved == 'bp' and destinationSpace in blackFinalRankSpaces:                 # Check if a black pawn has reached its final rank and is due for a promotion.
+                    print('\nYour pawn is due for a promotion!')
+                    time.sleep(0.75)
+                    chessBoard = pawn_promotion(chessBoard, destinationSpace, player='black')       # Call the function to promote a pawn.
+                    removedPieces['removedBlack'].append(pieceMoved)                                # Add a pawn to the removed pieces list for black pieces.
+                    
                 playerMoves['playerBlack'] += 1
             elif move == 'Save and Exit':
                 saveBoard(chessBoard, playerMoves, removedPieces, playerWhite, playerBlack)
@@ -203,7 +223,18 @@ def chessTurns(chessBoard, playerMoves, removedPieces, playerWhite, playerBlack)
         else:
             print('\nERROR: Black has more moves taken than White! Exiting program with an error!')
             sys.exit(1)
-                             
+ 
+ 
+def pawn_promotion(chessBoard, pawnSpace, player):
+    if player == 'white':
+        promotion = pyip.inputMenu(['wq', 'wk', 'wb', 'wr'], numbered=True, prompt='\nWhat would you like to promote your pawn to?\n')      # Ask player what to promote their pawn to.
+        chessBoard[pawnSpace] = promotion                                                                                                   # Promote pawn to new piece.
+    else:
+        promotion = pyip.inputMenu(['bq', 'bk', 'bb', 'br'], numbered=True, prompt='\nWhat would you like to promote your pawn to?\n')      # Ask player what to promote their pawn to.
+        chessBoard[pawnSpace] = promotion                                                                                                   # Promote pawn to new piece.
+    
+    return chessBoard
+    
                 
     
 def main():
