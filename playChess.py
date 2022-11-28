@@ -40,7 +40,13 @@ def load_board():
     
     # Check if the players have a saved game file.
     time.sleep(0.5)
-    answer = ''
+    if len(os.listdir(chessDir)) == 0:
+        answer = 'no'
+        print('No saved games found.')
+        time.sleep(0.25)
+    else:
+        answer = ''
+        
     while answer.lower() != 'yes' and answer.lower() != 'no':
         answer = input('Do you have a saved game that you would like to load? (yes/no) > ')
     
@@ -66,8 +72,8 @@ def load_board():
     elif answer == 'yes':
         try:
             print()
-            print(os.listdir(chessDir))
-            chessFile = input('\nWhich of these games would you like to load? Input MUST match a file name EXACTLY: ')
+            # Output a list of saved games in the chess directory.
+            chessFile = pyip.inputMenu(os.listdir(chessDir), numbered=True, prompt="Which of these games would you like to load? Type in the number that corresponds to your saved game: \n", blank=True)
             
             print('Loading chess board from file...\n')
             with open(os.path.join(chessDir, chessFile), 'r') as file:
