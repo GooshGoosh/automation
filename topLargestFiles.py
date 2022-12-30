@@ -39,7 +39,7 @@ def print_largest_sizes(dictOfSizes):
         if len(dictOfSizes[i][0]) > longestFilename:        # Find the longest filename in the list
             longestFilename = len(dictOfSizes[i][0])        # to properly format the output.
     for i in range(len(dictOfSizes)):
-        print('File: {} Size: {:.2f} MB'.format(str(dictOfSizes[i][0]).ljust((longestFilename + 3), "."), (dictOfSizes[i][1] / 1024**2)))       # Print the formatted output of the filename and the size.
+        print('File: {} Size: {:.2f} MB'.format(str(dictOfSizes[i][0]).ljust((longestFilename + 3), "."), (dictOfSizes[i][1] / 1024**2)))       # Print the formatted output of the filename and the size in MB.
 
 
 def main():
@@ -55,6 +55,10 @@ def main():
 
     print("\n")
     directoryContents = get_directory_contents(directory=sys.argv[1])
+    if len(directoryContents) == 0:
+        print("Given directory has no contents to parse. Exiting...")
+        sys.exit(0)
+
     contentsSizes, listOfDirectories = get_size_of_contents(directoryContents, directory=sys.argv[1])
     print_largest_sizes(contentsSizes)
     print('\nList of directories contained within {} > {}'.format(sys.argv[1], ", ".join(listOfDirectories)))       # Print the list of directories that are in the given path argument for the program.
