@@ -6,7 +6,7 @@
 # to remain independent of the OS that it is running on.
 
 
-BACKUPSCRIPT=/home/dirtypi/scripts/automation/backupFile.py 
+#BACKUPSCRIPT=/path/to/backup_file.py
 
 echo -e "\nChecking for backup script..."
 
@@ -20,6 +20,6 @@ elif [[ ! -x $BACKUPSCRIPT ]]; then
   echo -e "\nBackup script does not have execute permissions for current user! Exiting..."
   exit
 else
-  $BACKUPSCRIPT /home/dirtypi/test.txt 
+  $BACKUPSCRIPT #/path/to/file 
 fi 
 

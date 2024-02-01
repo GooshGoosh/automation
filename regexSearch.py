@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# regexSearch.py - Takes a folder path and a user-supplied regular expression as command-line arguments.
+# regexSearch.py - Takes a folder path and a user-supplied regular expression as command line arguments.
 # The program then opens every .txt file and searches through the text to find a match for the provided regex.
 # Any files that are found with a matching pattern are stored in a list and printed out for the user.
 

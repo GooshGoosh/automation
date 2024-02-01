@@ -33,7 +33,7 @@ def search_log(logFile, regexPattern):
 
 
 def main():
-    # Check if 2 command-line arguments are given with the program call.
+    # Check if 2 command line arguments are given with the program call.
     if len(sys.argv) != 3:
         print('Usage: checkSudoCommands.py [path/to/auth.log] [output file]')
         sys.exit(0)

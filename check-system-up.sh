@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# checkSystemUp.sh - Runs the ping command with a 2 second wait between each process to check if a system is able
-# to be accessed remotely. The script takes one command-line argument (the IP address of the target).
+# check-system-up.sh - Runs the ping command with a 2 second wait between each process to check if a system is able
+# to be accessed remotely. The script takes one command line argument (the IP address of the target).
 
 target=$1
 

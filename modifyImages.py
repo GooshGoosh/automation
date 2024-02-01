@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-''' modifyImages.py - Takes a specified directory given as a single command-line argument and searches through the directory
+''' modifyImages.py - Takes a specified directory given as a single command line argument and searches through the directory
 to determine any files that are images (e.g. files that can be opened with the pillow module's Image class). The files are then
 displayed on the screen for the user to see and the user is asked if they would like to rotate, resize, or rename a file.
 If the user chooses to modify a file, they are asked to select a file to perform the rotation, resize, or rename operation on.
@@ -15,7 +15,7 @@ from PIL import Image
 import pyinputplus as pyip
 
 
-# Ensure there is a single directory given as a command-line argument.
+# Ensure there is a single directory given as a command line argument.
 if len(sys.argv) != 2:
     print('Usage: modifyImages.py [/path/to/directory]')
     sys.exit(1)

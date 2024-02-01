@@ -25,10 +25,10 @@ async def check_disk_usage(disk):
 
 async def check_cpu_usage():
     print('\nChecking CPU...\n')
-    physicalCores = psutil.cpu_count(logical=False)                                 # Get the number of physical CPU cores
-    print('Current Number of CPU Cores (Physical): {}'.format(physicalCores))       # and print them to the screen.
-    logicalCores = psutil.cpu_count()                                               # Get the number of logical CPU cores (cores x threads per core)
-    print('Current Number of CPU Cores (Logical): {}'.format(logicalCores))         # and print them to the screen.
+    physical_cores = psutil.cpu_count(logical=False)                                 # Get the number of physical CPU cores
+    print('Current Number of CPU Cores (Physical): {}'.format(physical_cores))       # and print them to the screen.
+    logical_cores = psutil.cpu_count()                                               # Get the number of logical CPU cores (cores x threads per core)
+    print('Current Number of CPU Cores (Logical): {}'.format(logical_cores))         # and print them to the screen.
     usage = psutil.cpu_percent(1)
     if usage > 75:                                                                  # Check CPU usage and print a message depending on the
         print('WARNING! CPU usage over 75%!')                                       # current CPU usage.

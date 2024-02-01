@@ -50,18 +50,18 @@ def add_error_log(result):
             userStats[result.group(2)]['ERROR'] += 1
 
 
-def create_error_file(outputFile, dataList):
+def create_error_file(outputFile, data_list):
     with open(outputFile, 'w', newline='') as file:
         writer = csv.writer(file)
-        for item in dataList:
+        for item in data_list:
             writer.writerow([item[0], item[1]])
         file.close()
             
 
-def create_user_stats_file(outputFile, dataList):
+def create_user_stats_file(outputFile, data_list):
     with open(outputFile, 'w', newline='') as file:
         writer = csv.writer(file)
-        for item in dataList:
+        for item in data_list:
             if item[0] == 'jackowens':
                 file.close()
                 return
