@@ -11,35 +11,35 @@ import operator
 
 
 # Search through a given log file using a given regex pattern and save the results in a list to return.
-def search_log(logFile, regexPattern):
-    returnedLogs = []
-    userStats = {}
-    with open(logFile, mode='r', encoding='UTF-8') as file:
+def search_log(LOG_FILE, regex_pattern):
+    returned_logs = []
+    user_stats = {}
+    with open(LOG_FILE, mode='r', encoding='UTF-8') as file:
         for log in file.readlines():
-            result = re.search(regexPattern, log)
+            result = re.search(regex_pattern, log)
             if result is None:
                 continue
             else:
-                returnedLogs.append('Date/Time: {}; User: {}; Source IP: {}\n'.format(result.group(1), result.group(2), result.group(3)))
-                if result.group(2) not in userStats:
-                    userStats[result.group(2)] = 1
+                returned_logs.append('Date/Time: {}; User: {}; Source IP: {}\n'.format(result.group(1), result.group(2), result.group(3)))
+                if result.group(2) not in user_stats:
+                    user_stats[result.group(2)] = 1
                 else:
-                    userStats[result.group(2)] += 1
+                    user_stats[result.group(2)] += 1
         file.close()
-    return returnedLogs, userStats
+    return returned_logs, user_stats
 
 
 # Write the results of the search_log function to a new file.
-def create_file(outputFile, logList, userDict):
-    with open(outputFile, 'w') as file:
+def create_file(output_file, log_list, userDict):
+    with open(output_file, 'w') as file:
         file.write('FAILED SSH LOGIN ATTEMPTS PER USER\n')
         for user in userDict:
             file.write('{}: {}\n'.format(user[0], user[1]))
         file.write('-' * 20 + '\n')
-        for log in logList:
+        for log in log_list:
             file.write(log)
         file.close()
-    print('Parsed log file saved as {}'.format(outputFile))
+    print('Parsed log file saved as {}'.format(output_file))
     
 
 def main():    
@@ -47,22 +47,22 @@ def main():
         print('Usage: sshFailedLogins.py [/path/to/auth.log] [output file]')
         sys.exit(0)
 
-    logFile = sys.argv[1]
-    outputFile = os.path.join(os.path.expanduser('~'), sys.argv[2])
-    regexPattern = r'^(\w{3}\s+\d{1,2} \d{2}:\d{2}:\d{2}).*Failed password for (\w*) from (\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b)'
+    LOG_FILE = sys.argv[1]
+    output_file = os.path.join(os.path.expanduser('~'), sys.argv[2])
+    regex_pattern = r'^(\w{3}\s+\d{1,2} \d{2}:\d{2}:\d{2}).*Failed password for (\w*) from (\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b)'
 
-    if not os.path.exists(logFile):
-        print('Log file \'{}\' does not exist. Exiting...'.format(logFile))
+    if not os.path.exists(LOG_FILE):
+        print('Log file \'{}\' does not exist. Exiting...'.format(LOG_FILE))
         sys.exit(0)
-    elif os.path.exists(outputFile):
-        input = input('WARNING: The file \'{}\' already exists! Would you like to overwrite? (y/n): '.format(outputFile))
+    elif os.path.exists(output_file):
+        input = input('WARNING: The file \'{}\' already exists! Would you like to overwrite? (y/n): '.format(output_file))
         if input.lower() != 'y':
             print('Exiting...')
             sys.exit(0)
 
-    returnedLogs, userStats = search_log(logFile, regexPattern)
-    userStats = sorted(userStats.items(), key=operator.itemgetter(1), reverse=True)
-    create_file(outputFile, returnedLogs, userStats)
+    returned_logs, user_stats = search_log(LOG_FILE, regex_pattern)
+    user_stats = sorted(user_stats.items(), key=operator.itemgetter(1), reverse=True)
+    create_file(output_file, returned_logs, user_stats)
     sys.exit(0)
 
 

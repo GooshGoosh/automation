@@ -112,7 +112,7 @@ def check_internet(host='8.8.8.8', port=53, timeout=3):
         return 'Internet Check: Failed'
 
 
-def check_DNS(host='google-public-dns-a.google.com', timeout=3):
+def check_dns(host='google-public-dns-a.google.com', timeout=3):
     """Checks if DNS is working properly and the system is correctly resolving
     host names.
 
@@ -170,8 +170,8 @@ def generate_report(data_list):
 
     # Build the report and print the location/name of the report generated.
     report.build(story)
-    print(f"Report generated at \'{os.path.join(os.path.expanduser('~'), \
-        'system-resources-report.pdf')}\'")
+    print(f'Report generated at "{os.path.join(os.path.expanduser("~"),
+          "system-resources-report.pdf")}"')
 
 
 def main():
@@ -191,7 +191,7 @@ def main():
     print('\nChecking Internet Connection...\n')
     data_list.append(check_localhost())
     data_list.append(check_internet())
-    data_list.append(check_DNS())
+    data_list.append(check_dns())
 
     print('\nChecking Reboot...\n')
     data_list.append(check_reboot_required())

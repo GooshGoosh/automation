@@ -16,7 +16,7 @@ if len(sys.argv) != 3:
     sys.exit(0)
 
 folderToSearch = sys.argv[1]
-regexPattern = r"{}".format(sys.argv[2])
+regex_pattern = r"{}".format(sys.argv[2])
 matchedFiles = []
 
 
@@ -41,7 +41,7 @@ def search_files(folder, pattern):
 
 # Output the list of files that contain a match of the given regex     
 def output_list(list):
-    print('\nFiles containing a matching pattern for ( {} ):'.format(regexPattern))
+    print('\nFiles containing a matching pattern for ( {} ):'.format(regex_pattern))
     for file in list:
         print(file)
     print()
@@ -54,7 +54,7 @@ def main():
         sys.exit(0)
     
     # Search through the files and print the output
-    search_files(folderToSearch, regexPattern)
+    search_files(folderToSearch, regex_pattern)
     output_list(matchedFiles)
 
 
