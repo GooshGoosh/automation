@@ -18,7 +18,7 @@ import pyinputplus as pyip
 
 # Ensure there is a single directory given as a command line argument.
 if len(sys.argv) != 2:
-    print('Usage: modifyImages.py [/path/to/directory]')
+    print('Usage: modify_images.py [/path/to/directory]')
     sys.exit(1)
 
 IMAGE_DIR = os.path.abspath(sys.argv[1])

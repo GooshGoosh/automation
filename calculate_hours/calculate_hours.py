@@ -60,13 +60,13 @@ def write_report(hours_dict, report_file):
 def main():
     """Main function to run the program.
     """
-    hours_list = read_file('/path/to/hours-worked.csv')
+    hours_list = read_file('calculate_hours/hours-worked.csv')
     hours_dict = process_data(hours_list)
     print(hours_list)
     print()
     print(hours_dict)
     print()
-    write_report(hours_dict, '/path/to/hours-report.txt')
+    write_report(hours_dict, 'calculate_hours/hours-report.txt')
 
 
 if __name__ == "__main__":

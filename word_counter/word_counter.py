@@ -10,8 +10,8 @@ import csv
 import re
 
 
-TEXT_FILE = 'moby-dick.txt'
-OUTPUT_FILE = 'moby-dick-words.csv'
+TEXT_FILE = 'word_counter/moby-dick.txt'
+OUTPUT_FILE = 'word_counter/moby-dick-words.csv'
 list_of_data = []
 HEADERS = ['Word Length', 'Num of Words', 'Num of Lines']
 

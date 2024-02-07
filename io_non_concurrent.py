@@ -32,7 +32,7 @@ def download_all_sites(site_list):
 
 
 if __name__ == "__main__":
-    sites = [ 
+    sites = [
              'http://www.jython.org',
              'http://olympus.realpython.org'
     ] * 80
