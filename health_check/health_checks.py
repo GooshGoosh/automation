@@ -5,7 +5,7 @@ cpu usage.
 
 import shutil
 import psutil
-from health_check.network import check_localhost, check_connectivity
+import network
 
 
 def check_disk_usage(disk):
@@ -37,7 +37,7 @@ def main():
     """
     if not check_disk_usage("/") or not check_cpu_usage():
         print("ERROR!")
-    elif check_localhost() and check_connectivity():
+    elif network.check_localhost() and network.check_connectivity():
         print("Everything ok")
     else:
         print("Network checks failed")

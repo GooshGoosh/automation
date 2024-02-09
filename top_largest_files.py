@@ -58,14 +58,16 @@ def print_largest_sizes(list_of_sizes):
         list_of_sizes (list): List of tuples that contain the file names and the
         size of the file.
     """
+    # Get the longest filename for formatting the output.
     longest_filename = 0
-    for i, data in enumerate(list_of_sizes):
-        if len(list_of_sizes[i][0]) > longest_filename:
-            longest_filename = len(list_of_sizes[i][0])
-    for i, data in enumerate(list_of_sizes):
+    for data in list_of_sizes:
+        if len(data[0]) > longest_filename:
+            longest_filename = len(data[0])
+
+    for data in list_of_sizes:
         # Print the formatted output of the filename and the size in MB.
-        print(f'File: {str(data[i][0]).ljust((longest_filename + 3), ".")} \
-            Size: {(data[i][1] / 1024**2):.2f} MB')
+        print(f'File: {data[0].ljust((longest_filename + 3), ".")} \
+            Size: {(data[1] / 1024**2):.2f} MB')
 
 
 def main():

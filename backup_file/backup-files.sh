@@ -6,7 +6,7 @@
 # to remain independent of the OS that it is running on.
 
 
-#BACKUPSCRIPT=/path/to/backup_file.py
+BACKUPSCRIPT=backup_file.py
 
 echo -e "\nChecking for backup script..."
 

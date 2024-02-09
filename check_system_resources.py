@@ -162,7 +162,7 @@ def generate_report(data_list):
 
     for data in data_list:
         story.append(Spacer(1, 12))
-        if type(data) is list:
+        if isinstance(data, list):
             for line in data:
                 story.append(Paragraph(line, styles["Normal"]))
         else:
@@ -170,8 +170,8 @@ def generate_report(data_list):
 
     # Build the report and print the location/name of the report generated.
     report.build(story)
-    print(f'Report generated at "{os.path.join(os.path.expanduser("~"),
-          "system-resources-report.pdf")}"')
+    print(f'Report generated at '\
+        f'{os.path.join(os.path.expanduser("~"),"system-resources-report.pdf")}')
 
 
 def main():
